@@ -1,28 +1,48 @@
 ﻿using Ajuda.API;
+using Ajuda.API.Mensageria;
 using Ajuda.API.Repositories;
 using Ajuda.API.Services;
 using Ajuda.API.Services.Interfaces;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔌 Conexão com o banco Oracle
+// 🔌 Banco Oracle
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection")));
 
-// 🔄 Injeção de dependência dos Repositórios
+// 🧠 Repositórios e Serviços
 builder.Services.AddScoped<UsuarioRepository>();
 builder.Services.AddScoped<TipoAjudaRepository>();
 builder.Services.AddScoped<PedidoAjudaRepository>();
-
-// 🧠 Injeção de dependência dos Serviços (com interfaces)
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ITipoAjudaService, TipoAjudaService>();
 builder.Services.AddScoped<IPedidoAjudaService, PedidoAjudaService>();
 
-// 📦 Suporte a ciclos no JSON (evita erro de referência circular)
+// ✅ Fila com Channel<T>
+builder.Services.AddSingleton<PedidoAjudaQueue>();
+builder.Services.AddHostedService<PedidoAjudaConsumerService>();
+
+// ✅ Rate Limiting
+builder.Services.AddRateLimiter(_ =>
+{
+    _.AddPolicy("fixed", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            context.Connection.RemoteIpAddress?.ToString() ?? "anon",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromSeconds(60),
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0
+            }));
+});
+
+// 📦 Controllers e JSON
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -30,7 +50,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 
-// 🧪 Swagger com comentários XML e descrição da API
+// 🧪 Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -42,7 +62,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Ajuda.API",
         Version = "v1",
-        Description = "API para Cadastro e Solicitação de Ajuda Comunitária. Possui integração com IA (ML.NET) e segue boas práticas RESTful."
+        Description = "API para Cadastro e Solicitação de Ajuda Comunitária. Possui integração com IA (ML.NET) e fila assíncrona via Channel<T>."
     });
 
     c.TagActionsBy(api => new[] { api.GroupName });
@@ -51,7 +71,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 🚀 Middlewares
+// 🌐 Middlewares
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -60,5 +80,23 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
+// ✅ Ativar Rate Limiting
+app.UseRateLimiter();
+
+// ✅ Mensagem personalizada para 429
+app.Use(async (context, next) =>
+{
+    await next();
+
+    if (context.Response.StatusCode == 429)
+    {
+        context.Response.ContentType = "application/json";
+        var response = new { mensagem = "Limite de requisições excedido. Tente novamente em alguns instantes." };
+        var json = System.Text.Json.JsonSerializer.Serialize(response);
+        await context.Response.WriteAsync(json);
+    }
+});
+
 app.MapControllers();
 app.Run();

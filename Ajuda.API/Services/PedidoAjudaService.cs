@@ -123,5 +123,25 @@ namespace Ajuda.API.Services
             await _repository.DeletarAsync(id);
             return true;
         }
+
+        // ✅ Método auxiliar para a fila assíncrona com Channel<T>
+        public async Task<PedidoAjuda> MapearParaEntidade(PedidoAjudaDto dto)
+        {
+            return new PedidoAjuda
+            {
+                UsuarioId = dto.UsuarioId,
+                TipoAjudaId = dto.TipoAjudaId,
+                Endereco = dto.Endereco,
+                QuantidadePessoas = dto.QuantidadePessoas,
+                NivelUrgencia = dto.NivelUrgencia,
+                DataHoraPedido = DateTime.Now
+            };
+        }
+
+        public async Task<PedidoAjuda> CriarDiretoAsync(PedidoAjuda entidade)
+        {
+            await _repository.CriarAsync(entidade);
+            return entidade;
+        }
     }
 }

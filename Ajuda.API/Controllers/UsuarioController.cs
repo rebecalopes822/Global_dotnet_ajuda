@@ -2,6 +2,9 @@
 using Ajuda.API.Models;
 using Ajuda.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using Ajuda.API.Helpers;
+
 
 namespace Ajuda.API.Controllers
 {
@@ -20,19 +23,26 @@ namespace Ajuda.API.Controllers
             _service = service;
         }
 
-        /// <summary>
-        /// Lista todos os usuários cadastrados.
-        /// </summary>
-        /// <returns>Lista de usuários</returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Usuario>), 200)]
+        /// <summary>Lista todos os usuários cadastrados com links HATEOAS.</summary>
+        [HttpGet(Name = "GetUsuarios")]
+        [ProducesResponseType(typeof(IEnumerable<UsuarioComLinksDto>), 200)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var usuarios = await _service.ListarAsync();
-                return Ok(usuarios);
+
+                var usuariosComLinks = usuarios.Select(usuario =>
+                {
+                    var dto = new UsuarioComLinksDto(usuario);
+                    dto.Links.Add(new LinkDto(Url.Link("GetUsuarioById", new { id = usuario.Id })!, "self", "GET"));
+                    dto.Links.Add(new LinkDto(Url.Link("AtualizarUsuario", new { id = usuario.Id })!, "update", "PUT"));
+                    dto.Links.Add(new LinkDto(Url.Link("DeletarUsuario", new { id = usuario.Id })!, "delete", "DELETE"));
+                    return dto;
+                });
+
+                return Ok(usuariosComLinks);
             }
             catch (Exception ex)
             {
@@ -40,12 +50,8 @@ namespace Ajuda.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Busca um usuário pelo ID.
-        /// </summary>
-        /// <param name="id">ID do usuário</param>
-        /// <returns>Usuário encontrado</returns>
-        [HttpGet("{id}")]
+        /// <summary>Busca um usuário pelo ID.</summary>
+        [HttpGet("{id}", Name = "GetUsuarioById")]
         [ProducesResponseType(typeof(Usuario), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -56,6 +62,7 @@ namespace Ajuda.API.Controllers
                 var usuario = await _service.ObterPorIdAsync(id);
                 if (usuario == null)
                     return NotFound("Usuário não encontrado.");
+
                 return Ok(usuario);
             }
             catch (Exception ex)
@@ -64,14 +71,11 @@ namespace Ajuda.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Cria um novo usuário.
-        /// </summary>
-        /// <param name="dto">Dados do usuário</param>
-        /// <returns>Usuário criado</returns>
+        /// <summary>Cria um novo usuário.</summary>
         [HttpPost]
         [ProducesResponseType(typeof(Usuario), 201)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(429)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> Post([FromBody] UsuarioDto dto)
         {
@@ -80,6 +84,13 @@ namespace Ajuda.API.Controllers
 
             if (dto.EhVoluntario != 0 && dto.EhVoluntario != 1)
                 return BadRequest("Campo EhVoluntario inválido. Use 1 para Sim ou 0 para Não.");
+
+            // ⛔ RATE LIMITING
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "desconhecido";
+            if (!Helpers.RateLimitStore.PodeExecutar($"post_usuario_{ip}", TimeSpan.FromSeconds(10)))
+            {
+                return StatusCode(429, new { mensagem = "Limite de requisições excedido. Tente novamente em alguns instantes." });
+            }
 
             try
             {
@@ -100,12 +111,8 @@ namespace Ajuda.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Atualiza um usuário existente.
-        /// </summary>
-        /// <param name="id">ID do usuário</param>
-        /// <param name="dto">Dados atualizados</param>
-        [HttpPut("{id}")]
+        /// <summary>Atualiza um usuário existente.</summary>
+        [HttpPut("{id}", Name = "AtualizarUsuario")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -141,11 +148,8 @@ namespace Ajuda.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Deleta um usuário pelo ID.
-        /// </summary>
-        /// <param name="id">ID do usuário</param>
-        [HttpDelete("{id}")]
+        /// <summary>Deleta um usuário pelo ID.</summary>
+        [HttpDelete("{id}", Name = "DeletarUsuario")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]

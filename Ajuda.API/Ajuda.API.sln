@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ajuda.API", "Ajuda.API.cspr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ajuda.MLTrainer", "..\Ajuda.MLTrainer\Ajuda.MLTrainer.csproj", "{E58DCC65-8904-4A86-BDF8-DE1548180C7F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{410F3620-C697-4609-BD0D-10AB09D44F91}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{95D77DE8-4081-4FD1-84A3-9B5A04CF2D51}"
 	ProjectSection(SolutionItems) = preProject
-		gitignore.txt = gitignore.txt
+		..\..\.gitignore.txt = ..\..\.gitignore.txt
 	EndProjectSection
 EndProject
 Global

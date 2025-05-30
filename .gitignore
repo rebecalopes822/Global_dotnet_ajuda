@@ -1,11 +1,43 @@
+# Build
 bin/
 obj/
+*.dll
+*.exe
+
+# Visual Studio
 .vs/
 *.user
 *.suo
+
+# Configurações locais
+launchSettings.json
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs e temporários
 *.log
 *.tmp
-*.cache
-*.zip
-*.db
-*.pdb
+
+# Publish
+publish/
+
+# IDEs
+.vscode/
+.idea/
+
+# Pacotes
+*.nupkg
+packages/
+
+# .NET CLI
+*.dotnet-tools.json
+
+# Outros
+*.dbmdl
+*.pidb
+*.sdf
+*.suo
+*.userosscache
+

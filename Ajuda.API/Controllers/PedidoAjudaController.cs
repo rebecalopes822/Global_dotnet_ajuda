@@ -1,4 +1,6 @@
 ﻿using Ajuda.API.DTOs;
+using Ajuda.API.Models;
+using Ajuda.API.Mensageria; // ✅ onde está o PedidoAjudaQueue
 using Ajuda.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +12,12 @@ namespace Ajuda.API.Controllers
     public class PedidoAjudaController : ControllerBase
     {
         private readonly IPedidoAjudaService _service;
+        private readonly PedidoAjudaQueue _fila;
 
-        public PedidoAjudaController(IPedidoAjudaService service)
+        public PedidoAjudaController(IPedidoAjudaService service, PedidoAjudaQueue fila)
         {
             _service = service;
+            _fila = fila;
         }
 
         /// <summary>Lista todos os pedidos de ajuda.</summary>
@@ -45,9 +49,9 @@ namespace Ajuda.API.Controllers
             return Ok(pedido);
         }
 
-        /// <summary>Cria um novo pedido de ajuda.</summary>
+        /// <summary>Cria um novo pedido de ajuda e envia para fila assíncrona.</summary>
         [HttpPost]
-        [ProducesResponseType(typeof(PedidoAjudaDetalhadoDto), 201)]
+        [ProducesResponseType(typeof(PedidoAjuda), 202)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> Post([FromBody] PedidoAjudaDto dto)
         {
@@ -56,12 +60,15 @@ namespace Ajuda.API.Controllers
 
             try
             {
-                var criado = await _service.CriarAsync(dto);
-                return CreatedAtAction(nameof(Get), new { id = criado.Id }, criado);
+                var entidade = await _service.MapearParaEntidade(dto); // Certifique-se que esse método existe
+
+                await _fila.EnqueueAsync(entidade);
+
+                return Accepted("Pedido enfileirado com sucesso.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao criar pedido: {ex.Message}");
+                return StatusCode(500, $"Erro ao enfileirar pedido: {ex.Message}");
             }
         }
 
@@ -85,7 +92,7 @@ namespace Ajuda.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao atualizar pedido: {ex.Message} - {ex.InnerException?.Message}");
+                return StatusCode(500, $"Erro ao atualizar pedido: {ex.Message}");
             }
         }
 
