@@ -1,0 +1,14 @@
+# Pastas de build
+bin/
+obj/
+.vs/
+
+# Arquivos de usuário e IDE
+*.user
+*.suo
+
+# VS Code
+.vscode/
+
+# Logs
+*.log

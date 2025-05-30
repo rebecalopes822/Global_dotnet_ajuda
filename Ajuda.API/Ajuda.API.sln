@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ajuda.API", "Ajuda.API.csproj", "{ACEF19D6-3264-4577-AE26-62F6ED69D42A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ajuda.MLTrainer", "..\Ajuda.MLTrainer\Ajuda.MLTrainer.csproj", "{E58DCC65-8904-4A86-BDF8-DE1548180C7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{410F3620-C697-4609-BD0D-10AB09D44F91}"
+	ProjectSection(SolutionItems) = preProject
+		gitignore.txt = gitignore.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACEF19D6-3264-4577-AE26-62F6ED69D42A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACEF19D6-3264-4577-AE26-62F6ED69D42A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACEF19D6-3264-4577-AE26-62F6ED69D42A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACEF19D6-3264-4577-AE26-62F6ED69D42A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E58DCC65-8904-4A86-BDF8-DE1548180C7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E58DCC65-8904-4A86-BDF8-DE1548180C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E58DCC65-8904-4A86-BDF8-DE1548180C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E58DCC65-8904-4A86-BDF8-DE1548180C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {252F1CA6-62F2-4514-BC74-6E4235847331}
+	EndGlobalSection
+EndGlobal
