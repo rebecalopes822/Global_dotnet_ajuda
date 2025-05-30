@@ -1,13 +1,9 @@
 ﻿using Ajuda.API.Controllers;
 using Ajuda.API.DTOs;
-using Ajuda.API.Models;
 using Ajuda.API.Mensageria;
 using Ajuda.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace Ajuda.API.Tests.Controllers
 {

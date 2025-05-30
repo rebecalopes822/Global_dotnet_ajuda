@@ -1,6 +1,6 @@
 ﻿using Ajuda.API.DTOs;
 using Ajuda.API.Models;
-using Ajuda.API.Mensageria; // ✅ onde está o PedidoAjudaQueue
+using Ajuda.API.Mensageria;
 using Microsoft.AspNetCore.Mvc;
 using Ajuda.API.Services.Interfaces;
 
@@ -60,7 +60,7 @@ namespace Ajuda.API.Controllers
 
             try
             {
-                var entidade = await _service.MapearParaEntidade(dto); // Certifique-se que esse método existe
+                var entidade = await _service.MapearParaEntidade(dto);
 
                 await _fila.EnqueueAsync(entidade);
 

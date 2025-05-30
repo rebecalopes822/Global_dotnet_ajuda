@@ -3,7 +3,6 @@ using Ajuda.API.Mensageria;
 using Ajuda.API.Repositories;
 using Ajuda.API.Services;
 using Ajuda.API.Services.Interfaces;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -11,25 +10,25 @@ using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔌 Banco Oracle
+// banco oracle
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection")));
 
-// 🧠 Repositórios (Interfaces)
+// repositórios (interfaces)
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITipoAjudaRepository, TipoAjudaRepository>();
 builder.Services.AddScoped<IPedidoAjudaRepository, PedidoAjudaRepository>();
 
-// 🧠 Serviços (Interfaces)
+// serviços (interfaces)
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ITipoAjudaService, TipoAjudaService>();
 builder.Services.AddScoped<IPedidoAjudaService, PedidoAjudaService>();
 
-// ✅ Fila com Channel<T>
+// fila com channel<T>
 builder.Services.AddSingleton<PedidoAjudaQueue>();
 builder.Services.AddHostedService<PedidoAjudaConsumerService>();
 
-// ✅ Rate Limiting
+// rate limiting
 builder.Services.AddRateLimiter(_ =>
 {
     _.AddPolicy("fixed", context =>
@@ -44,7 +43,7 @@ builder.Services.AddRateLimiter(_ =>
             }));
 });
 
-// 📦 Controllers e JSON
+// controllers e JSON
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -52,7 +51,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 
-// 🧪 Swagger
+// swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -73,7 +72,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 🌐 Middlewares
+// middlewares
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -82,9 +81,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.UseRateLimiter(); // ✅ Ativa Rate Limiting
+app.UseRateLimiter();
 
-// ✅ Mensagem personalizada para 429
+// mensagem personalizada
 app.Use(async (context, next) =>
 {
     await next();

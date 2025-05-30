@@ -1,6 +1,0 @@
-@Ajuda.API_HostAddress = http://localhost:5233
-
-GET {{Ajuda.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

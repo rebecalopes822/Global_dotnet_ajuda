@@ -4,7 +4,7 @@ namespace Ajuda.API.DTOs
 {
     public class UsuarioDto
     {
-        public int Id { get; set; } // Para PUT
+        public int Id { get; set; }
 
         [Required]
         public string Nome { get; set; } = string.Empty;

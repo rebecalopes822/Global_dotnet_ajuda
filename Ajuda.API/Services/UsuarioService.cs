@@ -1,6 +1,5 @@
 ﻿using Ajuda.API.Models;
 using Ajuda.API.Services.Interfaces;
-using Ajuda.API.Services.Interfaces;
 
 namespace Ajuda.API.Services
 {

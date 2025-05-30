@@ -123,7 +123,6 @@ namespace Ajuda.API.Services
             return true;
         }
 
-        // ✅ Método auxiliar para a fila assíncrona com Channel<T>
         public async Task<PedidoAjuda> MapearParaEntidade(PedidoAjudaDto dto)
         {
             return new PedidoAjuda

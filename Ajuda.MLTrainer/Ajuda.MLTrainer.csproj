@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.ML.DataView" Version="4.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="urgencia_pedidos_500.csv">
+    <None Update="Dados\urgencia_pedidos_500.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

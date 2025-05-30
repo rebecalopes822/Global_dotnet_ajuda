@@ -11,7 +11,6 @@ namespace Ajuda.API.Services.Interfaces
         Task<bool> AtualizarAsync(int id, PedidoAjudaDto dto);
         Task<bool> DeletarAsync(int id);
 
-        // ✅ Novos métodos para integração com o Channel<T>
         Task<PedidoAjuda> MapearParaEntidade(PedidoAjudaDto dto);
         Task<PedidoAjuda> CriarDiretoAsync(PedidoAjuda entidade);
     }

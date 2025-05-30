@@ -2,10 +2,6 @@
 using Ajuda.API.Services.Interfaces;
 using Ajuda.API.Services;
 using Moq;
-using Xunit;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Ajuda.API.Services.Interfaces;
 
 namespace Ajuda.API.Tests.Services
 {

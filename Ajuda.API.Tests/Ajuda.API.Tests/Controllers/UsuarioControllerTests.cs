@@ -4,7 +4,6 @@ using Ajuda.API.Models;
 using Ajuda.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Xunit;
 
 namespace Ajuda.API.Tests.Controllers
 {

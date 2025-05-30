@@ -2,9 +2,6 @@
 using Ajuda.API.Models;
 using Ajuda.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using Ajuda.API.Helpers;
-
 
 namespace Ajuda.API.Controllers
 {
