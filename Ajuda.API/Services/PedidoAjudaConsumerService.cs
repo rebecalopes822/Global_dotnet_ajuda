@@ -1,9 +1,9 @@
 ﻿using Ajuda.API.Models;
 using Ajuda.API.Mensageria;
-using Ajuda.API.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Ajuda.API.Services.Interfaces;
 
 namespace Ajuda.API.Services
 {

@@ -1,9 +1,10 @@
 ﻿using Ajuda.API.Models;
+using Ajuda.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ajuda.API.Repositories
 {
-    public class UsuarioRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         private readonly AppDbContext _context;
 

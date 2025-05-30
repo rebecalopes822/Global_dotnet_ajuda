@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens
 		..\..\.gitignore.txt = ..\..\.gitignore.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ajuda.API.Tests", "..\Ajuda.API.Tests\Ajuda.API.Tests.csproj", "{C6995BD2-10A1-4198-A931-3DB9BD69F28B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{E58DCC65-8904-4A86-BDF8-DE1548180C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E58DCC65-8904-4A86-BDF8-DE1548180C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E58DCC65-8904-4A86-BDF8-DE1548180C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6995BD2-10A1-4198-A931-3DB9BD69F28B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6995BD2-10A1-4198-A931-3DB9BD69F28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6995BD2-10A1-4198-A931-3DB9BD69F28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6995BD2-10A1-4198-A931-3DB9BD69F28B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

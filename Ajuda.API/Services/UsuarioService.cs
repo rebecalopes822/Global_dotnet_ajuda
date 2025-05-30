@@ -1,14 +1,14 @@
-﻿using Ajuda.API.Repositories;
-using Ajuda.API.Models;
+﻿using Ajuda.API.Models;
+using Ajuda.API.Services.Interfaces;
 using Ajuda.API.Services.Interfaces;
 
 namespace Ajuda.API.Services
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly UsuarioRepository _repository;
+        private readonly IUsuarioRepository _repository;
 
-        public UsuarioService(UsuarioRepository repository)
+        public UsuarioService(IUsuarioRepository repository)
         {
             _repository = repository;
         }

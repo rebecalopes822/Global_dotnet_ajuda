@@ -1,20 +1,19 @@
 ﻿using Ajuda.API.DTOs;
 using Ajuda.API.Models;
-using Ajuda.API.Repositories;
 using Ajuda.API.Services.Interfaces;
 
 namespace Ajuda.API.Services
 {
     public class PedidoAjudaService : IPedidoAjudaService
     {
-        private readonly PedidoAjudaRepository _repository;
-        private readonly UsuarioRepository _usuarioRepository;
-        private readonly TipoAjudaRepository _tipoAjudaRepository;
+        private readonly IPedidoAjudaRepository _repository;
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly ITipoAjudaRepository _tipoAjudaRepository;
 
         public PedidoAjudaService(
-            PedidoAjudaRepository repository,
-            UsuarioRepository usuarioRepository,
-            TipoAjudaRepository tipoAjudaRepository)
+            IPedidoAjudaRepository repository,
+            IUsuarioRepository usuarioRepository,
+            ITipoAjudaRepository tipoAjudaRepository)
         {
             _repository = repository;
             _usuarioRepository = usuarioRepository;

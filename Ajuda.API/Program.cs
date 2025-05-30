@@ -15,10 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection")));
 
-// 🧠 Repositórios e Serviços
-builder.Services.AddScoped<UsuarioRepository>();
-builder.Services.AddScoped<TipoAjudaRepository>();
-builder.Services.AddScoped<PedidoAjudaRepository>();
+// 🧠 Repositórios (Interfaces)
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<ITipoAjudaRepository, TipoAjudaRepository>();
+builder.Services.AddScoped<IPedidoAjudaRepository, PedidoAjudaRepository>();
+
+// 🧠 Serviços (Interfaces)
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ITipoAjudaService, TipoAjudaService>();
 builder.Services.AddScoped<IPedidoAjudaService, PedidoAjudaService>();
@@ -62,7 +64,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "Ajuda.API",
         Version = "v1",
-        Description = "API para Cadastro e Solicitação de Ajuda Comunitária. Possui integração com IA (ML.NET) e fila assíncrona via Channel<T>."
+        Description = "API para Cadastro e Solicitação de Ajuda Comunitária. Possui integração com IA (ML.NET), fila assíncrona via Channel<T> e boas práticas RESTful."
     });
 
     c.TagActionsBy(api => new[] { api.GroupName });
@@ -80,9 +82,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
-// ✅ Ativar Rate Limiting
-app.UseRateLimiter();
+app.UseRateLimiter(); // ✅ Ativa Rate Limiting
 
 // ✅ Mensagem personalizada para 429
 app.Use(async (context, next) =>

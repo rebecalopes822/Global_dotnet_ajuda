@@ -1,8 +1,8 @@
 ﻿using Ajuda.API.DTOs;
 using Ajuda.API.Models;
 using Ajuda.API.Mensageria; // ✅ onde está o PedidoAjudaQueue
-using Ajuda.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Ajuda.API.Services.Interfaces;
 
 namespace Ajuda.API.Controllers
 {
